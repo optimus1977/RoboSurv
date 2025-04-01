@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://4bt18a1bjulu"]
+
+[ext_resource type="Script" uid="uid://cj640amd3m4uv" path="res://Player/Attack/blue_flame.gd" id="1_ffegi"]
+[ext_resource type="Texture2D" uid="uid://bnr1w8nvwr2l" path="res://Textures/Weapons/Flame/01.png" id="2_7u88n"]
+[ext_resource type="AudioStream" uid="uid://bsknvaufr775f" path="res://Audio/SoundEffect/blue_flame_sound.wav" id="3_2idkr"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_areud"]
+radius = 4.0
+height = 24.0
+
+[node name="BlueFlame" type="Area2D" groups=["attack"]]
+top_level = true
+scale = Vector2(0.1, 0.1)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_ffegi")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = -0.785398
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_7u88n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -1)
+rotation = -0.785398
+shape = SubResource("CapsuleShape2D_areud")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[node name="sound_play" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_2idkr")
+volume_db = -10.0
+autoplay = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

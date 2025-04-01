@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0j4plvvjbaxm"]
+
+[ext_resource type="Texture2D" uid="uid://bhnbiwlmcuaio" path="res://Textures/Tile_Floor_32X32.png" id="1_41rwn"]
+[ext_resource type="PackedScene" uid="uid://b0nwoi60recn5" path="res://Player/player.tscn" id="2_lob1u"]
+[ext_resource type="PackedScene" uid="uid://b10mse73tt8p5" path="res://Utility/enemy_spawner.tscn" id="3_mh664"]
+
+[node name="World" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+texture_filter = 1
+texture_repeat = 2
+texture = ExtResource("1_41rwn")
+region_enabled = true
+region_rect = Rect2(0, 0, 4000, 4000)
+
+[node name="Player" parent="." instance=ExtResource("2_lob1u")]
+motion_mode = 1
+
+[node name="EnemySpawner" parent="." instance=ExtResource("3_mh664")]
