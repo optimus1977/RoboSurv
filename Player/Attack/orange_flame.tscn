@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://bgit5fw2ov02"]
+
+[ext_resource type="Script" uid="uid://dgqg3jkwg2xaq" path="res://Player/Attack/orange_flame.gd" id="1_iiu1j"]
+[ext_resource type="Texture2D" uid="uid://glicrv00c3vp" path="res://Textures/Weapons/Flame/09.png" id="1_oo00p"]
+[ext_resource type="AudioStream" uid="uid://4msh745cx8" path="res://Audio/SoundEffect/orange_flame_sound.wav" id="2_iiu1j"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0d8j6"]
+radius = 9.19239
+height = 62.2254
+
+[node name="orange_flame" type="Area2D" groups=["attack"]]
+top_level = true
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_iiu1j")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = -0.785398
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_oo00p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -0.785398
+shape = SubResource("CapsuleShape2D_0d8j6")
+disabled = true
+
+[node name="AttackTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 4.0
+one_shot = true
+autostart = true
+
+[node name="ChangeDirection" type="Timer" parent="."]
+unique_name_in_owner = true
+
+[node name="ResetPosTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+
+[node name="orange_flame_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_iiu1j")
+
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
+[connection signal="timeout" from="ChangeDirection" to="." method="_on_change_direction_timeout"]

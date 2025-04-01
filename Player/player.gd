@@ -8,12 +8,14 @@ var last_movement = Vector2.UP
 #Attacks
 var blueFlame = preload("res://Player/Attack/blue_flame.tscn")
 var storm = preload("res://Player/Attack/storm.tscn")
+var orange_flame = preload("res://Player/Attack/orange_flame.tscn")
 
 #Attack nodes
 @onready var blueFlameTimer = get_node("%BlueFlameTimer")
 @onready var blueFlameAttackTimer = get_node("%BlueFlameAttackTimer")
 @onready var stormTimer = get_node("%StormTimer")
 @onready var stormAttackTimer = get_node("%StormAttackTimer")
+@onready var orangeFlameBase = get_node("%OrangeFlameBase")
 
 #BlueFlame
 var blueflame_ammo = 0
@@ -24,8 +26,12 @@ var blueflame_level = 0
 #Storm
 var storm_ammo = 0
 var storm_baseammo = 1
-var storm_attackspeed = 1.5
-var storm_level = 1
+var storm_attackspeed = 3
+var storm_level = 0
+
+#OrangeFlame
+var orangeflame_ammo = 1
+var orangeflame_level = 1
 
 #Enemy Related
 var enemy_close = []
@@ -69,6 +75,8 @@ func attack():
 		stormTimer.wait_time = storm_attackspeed
 		if stormTimer.is_stopped():
 			stormTimer.start()
+	if orangeflame_level > 0:
+		spawn_orange_flame()
 
 func _on_hurt_box_hurt(damage, _angle, _knockback):
 	hp -= damage
@@ -111,6 +119,14 @@ func _on_storm_attack_timer_timeout():
 		else:
 			stormAttackTimer.stop()
 
+func spawn_orange_flame():
+	var get_orangeflame_total = orangeFlameBase.get_child_count()
+	var calc_spawns = orangeflame_ammo - get_orangeflame_total
+	while calc_spawns > 0 :
+		var orangeflame_spawn = orange_flame.instantiate()
+		orangeflame_spawn.global_position = global_position
+		orangeFlameBase.add_child(orangeflame_spawn)
+		calc_spawns -= 1
 
 func get_random_target():
 	if enemy_close.size() > 0:
