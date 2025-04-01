@@ -3,19 +3,29 @@ extends CharacterBody2D
 
 var speed = 40.0
 var hp = 80.0
+var last_movement = Vector2.UP
 
 #Attacks
 var blueFlame = preload("res://Player/Attack/blue_flame.tscn")
+var storm = preload("res://Player/Attack/storm.tscn")
 
 #Attack nodes
 @onready var blueFlameTimer = get_node("%BlueFlameTimer")
 @onready var blueFlameAttackTimer = get_node("%BlueFlameAttackTimer")
+@onready var stormTimer = get_node("%StormTimer")
+@onready var stormAttackTimer = get_node("%StormAttackTimer")
 
 #BlueFlame
 var blueflame_ammo = 0
 var blueflame_baseammo = 1
 var blueflame_attackspeed = 1.5
-var blueflame_level = 1
+var blueflame_level = 0
+
+#Storm
+var storm_ammo = 0
+var storm_baseammo = 1
+var storm_attackspeed = 1.5
+var storm_level = 1
 
 #Enemy Related
 var enemy_close = []
@@ -27,12 +37,11 @@ func _ready():
 
 func _physics_process(delta):
 	var direction = Input.get_vector("left", "right", "up", "down")
-	
 	if direction.x == 0 and direction.y == 0:
 		player_state = "idle"
 	elif direction.x != 0 or direction.y != 0:
 		player_state = "walking"
-		
+	last_movement = direction
 	velocity = direction * speed
 	move_and_slide()
 	
@@ -56,7 +65,10 @@ func attack():
 		blueFlameTimer.wait_time = blueflame_attackspeed
 		if blueFlameTimer.is_stopped():
 			blueFlameTimer.start()
-
+	if storm_level > 0:
+		stormTimer.wait_time = storm_attackspeed
+		if stormTimer.is_stopped():
+			stormTimer.start()
 
 func _on_hurt_box_hurt(damage, _angle, _knockback):
 	hp -= damage
@@ -80,7 +92,26 @@ func _on_blue_flame_attack_timer_timeout():
 			blueFlameAttackTimer.start()
 		else:
 			blueFlameAttackTimer.stop()
-		
+			
+func _on_storm_timer_timeout():
+	storm_ammo += storm_baseammo
+	stormAttackTimer.start()
+
+
+func _on_storm_attack_timer_timeout():
+	if storm_ammo > 0:
+		var storm_attack = storm.instantiate()
+		storm_attack.position = position
+		storm_attack.last_movement = last_movement
+		storm_attack.level = storm_level
+		add_child(storm_attack)
+		storm_ammo -= 1
+		if storm_ammo > 0:
+			stormAttackTimer.start()
+		else:
+			stormAttackTimer.stop()
+
+
 func get_random_target():
 	if enemy_close.size() > 0:
 		return enemy_close.pick_random().global_position

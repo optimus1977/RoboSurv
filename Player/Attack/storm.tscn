@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://hn6rs0f638e3"]
+
+[ext_resource type="Script" uid="uid://d1bn2nqse56q8" path="res://Player/Attack/storm.gd" id="1_5cl3s"]
+[ext_resource type="Texture2D" uid="uid://dd36y27qv0cwp" path="res://Textures/Weapons/storm.png" id="1_ks2no"]
+[ext_resource type="AudioStream" uid="uid://c76b744817jpt" path="res://Audio/SoundEffect/storm_sound.wav" id="2_4pjyn"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4pjyn"]
+radius = 14.9933
+height = 65.9984
+
+[node name="Storm" type="Area2D" groups=["attack"]]
+top_level = true
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_5cl3s")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ks2no")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_4pjyn")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 20.0
+autostart = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_4pjyn")
+autoplay = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

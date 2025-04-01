@@ -43,7 +43,7 @@ func death():
 func _on_hurt_box_hurt(damage, angle, knockback_amount):
 	hp -= damage
 	knockback = angle * knockback_amount
-	if hp < 0:
+	if hp <= 0:
 		death()
 	else:
 		sound_hit.play()
