@@ -21,17 +21,17 @@ var orange_flame = preload("res://Player/Attack/orange_flame.tscn")
 var blueflame_ammo = 0
 var blueflame_baseammo = 1
 var blueflame_attackspeed = 1.5
-var blueflame_level = 0
+var blueflame_level = 1
 
 #Storm
 var storm_ammo = 0
 var storm_baseammo = 1
 var storm_attackspeed = 3
-var storm_level = 0
+var storm_level = 1
 
 #OrangeFlame
 var orangeflame_ammo = 1
-var orangeflame_level = 1
+var orangeflame_level = 0
 
 #Enemy Related
 var enemy_close = []
